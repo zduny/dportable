@@ -13,6 +13,8 @@
 //!  - [dtest](test::dtest) attribute macro to create tests for both 
 //!    native and WASM targets, also [dtest_configure](test::dtest_configure) 
 //!    macro to configure tests to run in browser.
+//!  - [create_non_sync_send_variant_for_wasm] utility macro for creating
+//!    non-[Send] and non-[Sync] variants of traits for use in WASM.
 
 pub mod test;
 
@@ -32,9 +34,21 @@ pub use tokio::{
 #[cfg(target_arch = "wasm32")]
 pub use js_utils::spawn::*;
 
+/// Utility macro for creating non-[Send] and non-[Sync] variants of traits 
+/// for use in WASM.
+/// 
+/// ```
+/// create_non_sync_send_variant_for_wasm! {
+///     trait SomeTrait: Send {
+///        fn hello(&self);
+///     }
+/// }
+/// ```
+pub use dportable_macros::create_non_sync_send_variant_for_wasm;
+
 #[cfg(test)]
 mod tests {
-    use crate::test::dtest;
+    use crate::{test::dtest, create_non_sync_send_variant_for_wasm};
 
     use super::spawn;
 
@@ -42,5 +56,34 @@ mod tests {
     async fn test_spawn() {
         let result = spawn(async move { 4 });
         assert_eq!(4, result.await.unwrap());
+    }
+
+    #[dtest]
+    async fn test_create_non_sync_send_variant_for_wasm() {
+
+        struct Hello {
+            #[cfg(target_arch = "wasm32")]
+            _some_reference: std::rc::Rc<()>,
+
+            #[cfg(not(target_arch = "wasm32"))]
+            _some_reference: std::sync::Arc<()>,
+        }
+
+        create_non_sync_send_variant_for_wasm! {
+            trait SomeTrait: Send {
+                fn hello(&self);
+            }
+        }
+
+        impl SomeTrait for Hello {
+            fn hello(&self) {
+                println!("Hello!");
+            }
+        }
+        
+        let hello = Hello { _some_reference: Default::default() };
+        spawn(async move {
+            hello.hello();
+        });
     }
 }
