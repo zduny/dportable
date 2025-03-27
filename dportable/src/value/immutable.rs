@@ -1,6 +1,10 @@
 //! Async value that can be set only once.
 
-use std::{future::Future, pin::Pin, task::{Context, Poll}};
+use std::{
+    future::Future,
+    pin::Pin,
+    task::{Context, Poll},
+};
 
 use futures::{future::FusedFuture, ready, FutureExt};
 
