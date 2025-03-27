@@ -48,7 +48,7 @@ impl Timeout {
     pub fn reset(&mut self) {
         if let Timeout::Duration { duration, sleep } = self {
             let deadline = Instant::now() + *duration;
-            sleep.as_mut().reset(deadline.into())
+            sleep.as_mut().reset(deadline)
         }
     }
 }
