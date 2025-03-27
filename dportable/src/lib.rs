@@ -38,6 +38,8 @@ pub use js_utils::spawn::*;
 /// for use in WASM.
 ///
 /// ```
+/// use dportable::create_non_sync_send_variant_for_wasm;
+/// 
 /// create_non_sync_send_variant_for_wasm! {
 ///     trait SomeTrait: Send {
 ///        fn hello(&self);
