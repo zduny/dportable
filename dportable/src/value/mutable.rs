@@ -67,7 +67,7 @@ where
     }
 
     /// Take value out.
-    /// 
+    ///
     /// It will reset this async value to empty state.
     pub fn take(&self) -> Option<T> {
         let mut value = self.value.write();
@@ -115,12 +115,11 @@ where
     }
 }
 
-
 #[cfg(test)]
 mod tests {
+    use crate::spawn;
     use crate::test::{dtest, dtest_configure};
     use crate::value::AlreadySet;
-    use crate::spawn;
 
     use super::AsyncValue;
 

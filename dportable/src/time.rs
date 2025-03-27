@@ -1,6 +1,11 @@
 //! Utilities for tracking time.
 
-use std::{future::Future, pin::Pin, task::{Context, Poll}, time::Duration};
+use std::{
+    future::Future,
+    pin::Pin,
+    task::{Context, Poll},
+    time::Duration,
+};
 
 use futures::{future::FusedFuture, ready, FutureExt};
 #[cfg(not(target_arch = "wasm32"))]
@@ -94,13 +99,11 @@ mod tests {
     #[dtest]
     async fn test_timeout() {
         let mut timeout = Timeout::new(Duration::from_millis(10));
-        let task = spawn(async move {
-            2
-        });
+        let task = spawn(async move { 2 });
         let result = select(&mut timeout, task).await;
         match result {
             Either::Right((Ok(result), _)) => assert_eq!(result, 2),
-            _ => panic!("wrong result")
+            _ => panic!("wrong result"),
         }
         timeout.reset();
 
@@ -109,7 +112,7 @@ mod tests {
         let result = select(timeout, sleep).await;
         match result {
             Either::Left(_) => (),
-            _ => panic!("wrong result")
+            _ => panic!("wrong result"),
         }
     }
 }

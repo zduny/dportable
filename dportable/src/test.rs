@@ -3,13 +3,13 @@
 /// Configure WASM tests to run in browser.
 pub use dportable_macros::dtest_configure;
 
-/// Convert test into two tests for WASM (using 
+/// Convert test into two tests for WASM (using
 /// [wasm-bindgen-test](https://crates.io/crates/wasm-bindgen-test))
 /// and non-WASM targets (using [tokio::test]).
-/// 
+///
 /// ```
 /// use dportable::test::dtest;
-/// 
+///
 /// #[dtest]
 /// async fn test_portable() {
 ///     assert_eq!(2 + 2, 4);

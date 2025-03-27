@@ -1,5 +1,5 @@
 //! Asynchronous cloneable lazily-initialized value.
-//! 
+//!
 //! Note that it uses locking internally - it is intended for cases where convenience of use
 //! is more important than high performance - for those use naked async channels instead.
 

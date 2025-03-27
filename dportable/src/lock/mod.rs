@@ -14,8 +14,8 @@ pub use wasm::*;
 
 #[cfg(test)]
 mod tests {
-    use crate::test::{dtest, dtest_configure};
     use super::{Mutex, RwLock};
+    use crate::test::{dtest, dtest_configure};
 
     dtest_configure!();
 

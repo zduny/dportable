@@ -1,1 +1,1 @@
-pub use parking_lot::{Mutex, RwLock, MutexGuard, RwLockReadGuard, RwLockWriteGuard};
+pub use parking_lot::{Mutex, MutexGuard, RwLock, RwLockReadGuard, RwLockWriteGuard};
