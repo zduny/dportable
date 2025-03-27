@@ -15,6 +15,7 @@
 //!    macro to configure tests to run in browser.
 //!  - [create_non_sync_send_variant_for_wasm] utility macro for creating
 //!    non-[Send] and non-[Sync] variants of traits for use in WASM.
+//!  - [random] function.
 
 pub mod test;
 
@@ -47,6 +48,12 @@ pub use js_utils::spawn::*;
 /// }
 /// ```
 pub use dportable_macros::create_non_sync_send_variant_for_wasm;
+
+#[cfg(target_arch = "wasm32")]
+pub use js_sys::Math::random;
+
+#[cfg(not(target_arch = "wasm32"))]
+pub use rand::random;
 
 #[cfg(test)]
 mod tests {
