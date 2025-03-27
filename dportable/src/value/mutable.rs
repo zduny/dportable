@@ -1,3 +1,5 @@
+//! Async value that can be reset to empty state.
+
 use std::{
     future::Future,
     pin::Pin,
@@ -15,6 +17,7 @@ use crate::{Mutex, RwLock};
 
 use super::AlreadySet;
 
+/// Async value that can be reset to empty state.
 #[derive(Debug)]
 pub struct AsyncValue<T> {
     value: Arc<RwLock<Option<T>>>,
@@ -37,6 +40,7 @@ impl<T> AsyncValue<T>
 where
     T: Clone,
 {
+    /// Create new mutable async value.
     pub fn new() -> Self {
         let (sender, receiver) = channel();
         let value = Arc::new(RwLock::new(None));
@@ -49,6 +53,7 @@ where
         }
     }
 
+    /// Set value.
     pub fn set(&self, new_value: T) -> Result<(), AlreadySet> {
         let mut value = self.value.write();
         let mut sender = self.sender.lock();
@@ -61,6 +66,9 @@ where
         }
     }
 
+    /// Take value out.
+    /// 
+    /// It will reset this async value to empty state.
     pub fn take(&self) -> Option<T> {
         let mut value = self.value.write();
         let mut sender = self.sender.lock();
@@ -75,6 +83,7 @@ where
         result
     }
 
+    /// Return value or [None] if not set.
     pub fn try_get(&self) -> Option<T> {
         self.value.read().clone()
     }

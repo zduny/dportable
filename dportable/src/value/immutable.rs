@@ -1,3 +1,5 @@
+//! Async value that can be set only once.
+
 use std::{
     future::Future,
     pin::Pin,
@@ -15,6 +17,7 @@ use crate::Mutex;
 
 use super::AlreadySet;
 
+/// Async value that can be set only once.
 #[derive(Debug, Clone)]
 pub struct AsyncValue<T> {
     sender: Arc<Mutex<Option<Sender<T>>>>,
@@ -26,6 +29,7 @@ impl<T> AsyncValue<T>
 where
     T: Clone,
 {
+    /// Create new async value.
     pub fn new() -> Self {
         let (sender, receiver) = channel();
         let sender = Arc::new(Mutex::new(Some(sender)));
@@ -37,6 +41,7 @@ where
         }
     }
 
+    /// Set value.
     pub fn set(&self, value: T) -> Result<(), AlreadySet> {
         if let Some(sender) = self.sender.lock().take() {
             let _ = sender.send(value);
@@ -46,6 +51,7 @@ where
         }
     }
 
+    /// Return value or [None] if not yet set.
     pub fn try_get(&self) -> Option<T> {
         self.receiver.peek().and_then(|result| result.clone().ok())
     }
@@ -86,18 +92,22 @@ where
     }
 }
 
+/// Asynchronous notifier.
 #[derive(Debug, Clone, Default)]
 pub struct Notifier(AsyncValue<()>);
 
 impl Notifier {
+    /// Create new async notifier.
     pub fn new() -> Self {
         Notifier(AsyncValue::new())
     }
 
+    /// Returns [true] if already notified.
     pub fn already_notified(&self) -> bool {
         self.0.try_get().is_some()
     }
 
+    /// Notify others (and myself).
     pub fn notify(&self) {
         let _ = self.0.set(());
     }
@@ -128,18 +138,6 @@ mod tests {
     use super::{AsyncValue, Notifier};
 
     dtest_configure!();
-
-    /*
-    #[dtest]
-    async fn test_take() {
-        let value = AsyncValue::new();
-        assert_eq!(value.take(), None);
-        value.set(3).unwrap();
-        assert_eq!(value.take().unwrap(), 3);
-        assert_eq!(value.take(), None);
-        value.set(5).unwrap();
-        assert_eq!(value.await, 5);
-    }*/
 
     #[dtest]
     async fn test_async_value() {
