@@ -1,27 +1,15 @@
 //! Async value that can be set only once.
 
-use std::{
-    future::Future,
-    pin::Pin,
-    sync::Arc,
-    task::{Context, Poll},
-};
+use std::{future::Future, pin::Pin, task::{Context, Poll}};
 
-use futures::{
-    channel::oneshot::{channel, Receiver, Sender},
-    future::{FusedFuture, Shared},
-    ready, FutureExt,
-};
+use futures::{future::FusedFuture, ready, FutureExt};
 
-use crate::Mutex;
-
-use super::AlreadySet;
+use super::{mutable, AlreadySet};
 
 /// Async value that can be set only once.
 #[derive(Debug, Clone)]
 pub struct AsyncValue<T> {
-    sender: Arc<Mutex<Option<Sender<T>>>>,
-    receiver: Shared<Receiver<T>>,
+    inner: mutable::AsyncValue<T>,
     terminated: bool,
 }
 
@@ -31,29 +19,20 @@ where
 {
     /// Create new async value.
     pub fn new() -> Self {
-        let (sender, receiver) = channel();
-        let sender = Arc::new(Mutex::new(Some(sender)));
-        let receiver = receiver.shared();
         AsyncValue {
-            sender,
-            receiver,
+            inner: mutable::AsyncValue::new(),
             terminated: false,
         }
     }
 
     /// Set value.
     pub fn set(&self, value: T) -> Result<(), AlreadySet> {
-        if let Some(sender) = self.sender.lock().take() {
-            let _ = sender.send(value);
-            Ok(())
-        } else {
-            Err(AlreadySet {})
-        }
+        self.inner.set(value)
     }
 
     /// Return value or [None] if not yet set.
     pub fn try_get(&self) -> Option<T> {
-        self.receiver.peek().and_then(|result| result.clone().ok())
+        self.inner.try_get()
     }
 }
 
@@ -73,13 +52,9 @@ where
     type Output = T;
 
     fn poll(mut self: Pin<&mut Self>, cx: &mut Context<'_>) -> Poll<Self::Output> {
-        match ready!(self.receiver.poll_unpin(cx)) {
-            Ok(value) => {
-                self.terminated = true;
-                Poll::Ready(value)
-            }
-            Err(_) => Poll::Pending,
-        }
+        let result = ready!(self.inner.poll_unpin(cx));
+        self.terminated = true;
+        Poll::Ready(result)
     }
 }
 
