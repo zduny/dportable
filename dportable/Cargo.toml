@@ -1,0 +1,17 @@
+[package]
+name = "dportable"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+dportable-macros = { path = "../dportable-macros"} 
+futures = "0.3"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { version = "1", features = ["rt", "time", "macros"] }
+parking_lot = "0.12"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+js-utils = { version = "0.1", features = ["spawn", "sleep"] }
+wasm-bindgen-test = "0.3"
+
