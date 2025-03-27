@@ -41,7 +41,7 @@ mod tests {
     use super::dtest;
 
     #[test]
-    fn test_skip_self() {
+    fn test_dtest() {
         let expected = quote! {
             #[cfg(not(target_arch = "wasm32"))]
             #[::tokio::test]
