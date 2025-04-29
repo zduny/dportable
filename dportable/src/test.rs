@@ -5,7 +5,8 @@ pub use dportable_macros::dtest_configure;
 
 /// Convert test into two tests for WASM (using
 /// [wasm-bindgen-test](https://crates.io/crates/wasm-bindgen-test))
-/// and non-WASM targets (using [tokio::test]).
+/// and non-WASM targets (using 
+/// [tokio::test](https://docs.rs/tokio/latest/tokio/attr.test.html)).
 ///
 /// ```
 /// use dportable::test::dtest;

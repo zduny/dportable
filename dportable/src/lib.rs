@@ -1,12 +1,12 @@
 //! Portable interface for various utilities.
 //!
 //! Intended targets are:
-//!  - native platforms with [tokio] async runtime,
+//!  - native platforms with [tokio](https://docs.rs/tokio/latest/tokio/) async runtime,
 //!  - WebAssembly targeted to browsers, including WebWorkers,
 //!    under standard single-threaded model.
 //!
 //! Following features are provided:
-//!  - [Mutex] and [RwLock] (using [parking_lot] on native platforms)
+//!  - [Mutex] and [RwLock] (using [parking_lot](https://docs.rs/parking_lot/latest/parking_lot/) on native platforms)
 //!    and [std::cell::RefCell] in WASM.
 //!  - asynchronous [spawn] (not requiring [Send] in WASM) and [sleep](time::sleep),
 //!  - [Timeout](time::Timeout) future,
