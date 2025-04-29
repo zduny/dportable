@@ -8,8 +8,7 @@ Intended targets are:
    under standard single-threaded model.
 
 Following features are provided:
- - `Mutex` and `RwLock` (using [parking_lot](https://docs.rs/parking_lot/latest/parking_lot/) on native platforms)
-    and `std::cell::RefCell` in WASM.  
+ - `Mutex` and `RwLock` (using [parking_lot](https://docs.rs/parking_lot/latest/parking_lot/) on native platforms and `std::cell::RefCell` in WASM).  
  - asynchronous `spawn` (not requiring `Send` in WASM) and `sleep`,
  - `Timeout` future,
  - `dtest` attribute macro to create tests for both
