@@ -1,5 +1,7 @@
 # dportable
 
+[![Test Status](https://github.com/zduny/dportable/actions/workflows/rust.yml/badge.svg)](https://github.com/zduny/dportable/actions)
+
 Portable interface for various utilities.
 
 Intended targets are:
