@@ -2,6 +2,10 @@
 name = "dportable-macros"
 version = "0.1.0"
 edition = "2021"
+description = "Portable interface for various utilities (macros)."
+license = "MIT"
+repository = "https://github.com/zduny/dportable"
+documentation = "https://docs.rs/dportable/"
 
 [lib]
 proc-macro = true
