@@ -1,6 +1,8 @@
 # dportable
 
 [![Test Status](https://github.com/zduny/dportable/actions/workflows/rust.yml/badge.svg)](https://github.com/zduny/dportable/actions)
+[![Crate](https://img.shields.io/crates/v/dportable.svg)](https://crates.io/crates/dportable)
+[![API](https://docs.rs/dportable/badge.svg)](https://docs.rs/dportable)
 
 https://crates.io/crates/dportable
 
