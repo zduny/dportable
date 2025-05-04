@@ -2,6 +2,10 @@
 
 [![Test Status](https://github.com/zduny/dportable/actions/workflows/rust.yml/badge.svg)](https://github.com/zduny/dportable/actions)
 
+https://crates.io/crates/dportable
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/O5O31JYZ4)
+
 Portable interface for various utilities.
 
 Intended targets are:
