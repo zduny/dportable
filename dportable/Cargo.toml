@@ -9,7 +9,7 @@ repository = "https://github.com/zduny/dportable"
 documentation = "https://docs.rs/dportable/"
 
 [dependencies]
-dportable-macros = { path = "../dportable-macros"} 
+dportable-macros = "0.1.0"
 futures = "0.3"
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]
