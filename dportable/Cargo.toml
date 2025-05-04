@@ -1,12 +1,13 @@
 [package]
 name = "dportable"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["zduny <dzduniak@gmail.com>"]
 description = "Portable interface for various utilities."
 license = "MIT"
 repository = "https://github.com/zduny/dportable"
 documentation = "https://docs.rs/dportable/"
+readme = "../README.md"
 
 [dependencies]
 dportable-macros = "0.1.0"
