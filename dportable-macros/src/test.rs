@@ -13,7 +13,7 @@ pub fn dtest_configure() -> TokenStream {
 pub fn dtest(item: TokenStream) -> TokenStream {
     if let Ok(mut item) = syn::parse2::<syn::ItemFn>(item) {
         item.attrs
-            .retain(|attribute| !is_dnet_test_attribute(attribute));
+            .retain(|attribute| !is_dtest_attribute(attribute));
         let output = quote! {
             #[cfg(not(target_arch = "wasm32"))]
             #[::tokio::test]
@@ -30,8 +30,8 @@ pub fn dtest(item: TokenStream) -> TokenStream {
     }
 }
 
-fn is_dnet_test_attribute(attribute: &syn::Attribute) -> bool {
-    attribute.path().is_ident("dnet_test")
+fn is_dtest_attribute(attribute: &syn::Attribute) -> bool {
+    attribute.path().is_ident("dtest")
 }
 
 #[cfg(test)]
@@ -53,7 +53,7 @@ mod tests {
         };
 
         let test = quote! {
-            #[dnet_test]
+            #[dtest]
             async fn some_test(&self, a: u32, b: String) {}
         };
 
