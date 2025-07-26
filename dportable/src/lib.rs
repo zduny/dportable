@@ -6,7 +6,7 @@
 //!    under standard single-threaded model.
 //!
 //! Following features are provided:
-//!  - [Mutex] and [RwLock] (using [parking_lot](https://docs.rs/parking_lot/latest/parking_lot/) on native platforms 
+//!  - [Mutex] and [RwLock] (using [parking_lot](https://docs.rs/parking_lot/latest/parking_lot/) on native platforms
 //!    and [std::cell::RefCell] in WASM).
 //!  - asynchronous [spawn] (not requiring [Send] in WASM) and [sleep](time::sleep),
 //!  - [Timeout](time::Timeout) future,
@@ -50,14 +50,14 @@ pub use js_utils::spawn::*;
 pub use dportable_macros::create_non_sync_send_variant_for_wasm;
 
 #[cfg(target_arch = "wasm32")]
-/// Returns a floating-point, pseudo-random number in the range 0–1 
+/// Returns a floating-point, pseudo-random number in the range 0–1
 /// (inclusive of 0, but not 1) with approximately uniform distribution over that range.
 pub fn random() -> f64 {
     js_sys::Math::random()
 }
 
 #[cfg(not(target_arch = "wasm32"))]
-/// Returns a floating-point, pseudo-random number in the range 0–1 
+/// Returns a floating-point, pseudo-random number in the range 0–1
 /// (inclusive of 0, but not 1) with approximately uniform distribution over that range.
 pub fn random() -> f64 {
     rand::random()
